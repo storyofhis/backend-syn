@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/storyofhis/auth-svc/protos";
+
+import "google/api/annotations.proto";
+
+service UserService {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/users"
+            body: "*"
+        };
+    }
+    rpc LoginUser (LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/v1/login"
+            body: "*"
+        };
+    }
+    rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {
+        option (google.api.http) = {
+            get: "/v1/users"
+        };
+    }
+    rpc GetUserById (GetUserByIdRequest) returns (GetUserByIdResponse) {
+        option (google.api.http) = {
+            get: "/v1/users/{id}"
+        };
+    }
+    rpc UpdateUserById (UpdateUserByIdRequest) returns (UpdateUserByIdResponse) {
+        option (google.api.http) = {
+            put: "/v1/users/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteUserById (DeleteUserByIdRequest) returns (DeleteUserByIdResponse) {
+        option (google.api.http) = {
+            delete: "/v1/users/{id}"
+        };
+    }
+}
+
+message User {
+    string id = 1;
+    string username = 2;
+    string fullname = 3;
+    string email = 4;
+    string address = 5;
+    string password = 6;
+    string phone_number = 7;
+}
+
+message CreateUserRequest {
+    string username = 1;
+    string fullname = 2;
+    string email = 3;
+    string address = 4;
+    string password = 5;
+    string phone_number = 6;
+}
+
+message CreateUserResponse {
+    User user = 1;
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string token = 1;
+}
+
+message GetUsersRequest {}
+
+message GetUsersResponse {
+    repeated User users = 1;
+}
+
+message GetUserByIdRequest {
+    string id = 1;
+}
+
+message GetUserByIdResponse {
+    User user = 1;
+}
+
+message UpdateUserByIdRequest {
+    string id = 1;
+}
+
+message UpdateUserByIdResponse {
+    User user = 1;
+}
+
+message DeleteUserByIdRequest {
+    string id = 1;
+}
+
+message DeleteUserByIdResponse {
+    string message = 1;
+}
