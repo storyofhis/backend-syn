@@ -6,7 +6,10 @@ there are several services :
 - [authors service](https://github.com/storyofhis/backend-syn/blob/main/author-svc/README.md) : to manage authors
 - [category service](https://github.com/storyofhis/backend-syn/blob/main/category-svc/README.md) : to manage book categories
 
-schema for Entity-Relationship Diagram (ERD) : 
+## Entity-Relationship Diagram (ERD) : 
+this is the schema of database design systems
+![Screenshot 2024-08-09 at 20 33 12](https://github.com/user-attachments/assets/05b54daf-d877-4b32-b5ef-14c9632d8f6c)
+
 - BookService
 -------------------
 | book            |
