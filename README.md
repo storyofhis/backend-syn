@@ -10,7 +10,7 @@ there are several services :
 this is the schema of database design systems
 ![Screenshot 2024-08-09 at 20 33 12](https://github.com/user-attachments/assets/05b54daf-d877-4b32-b5ef-14c9632d8f6c)
 
-- BookService
+- book_db: database for `book-svc` only have book table
 -------------------
 | book            |
 |-----------------|
@@ -24,7 +24,7 @@ this is the schema of database design systems
 | updated_at      |   
 -------------------   
                     
-- AuthorService         
+- author_db: database for `author-svc` only have author table
 -------------------   
 | author          |   
 |-----------------|   
@@ -35,7 +35,7 @@ this is the schema of database design systems
 | updated_at      |      
 -------------------     
                          
-- CategoryService          
+- category_db: database for `category-svc` only have category table       
 -------------------    
 | category        |      
 |-----------------|     
@@ -46,7 +46,7 @@ this is the schema of database design systems
 | updated_at      |        
 -------------------       
                         
-- BorrowingService         
+- user_db: database for `user-svc` have two tables (borrowing and user) 
 -------------------    
 | borrowing       |
 |-----------------|
