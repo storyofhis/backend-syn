@@ -41,16 +41,18 @@ message Book {
     string title = 2;
     string author = 3;
     string category_id = 4;
-    string description = 5;
-    int32 stock = 6;
+    string author_id = 5;
+    string description = 6;
+    int32 stock = 7;
 }
 
 message CreateBookRequest {
     string title = 1;
     string author = 2;
     string category_id = 3;
-    string description = 4;
-    int32 stock = 5;
+    string author_id = 4;
+    string description = 5;
+    int32 stock = 6;
 }
 
 message GetBooksRequest {}
@@ -68,8 +70,9 @@ message UpdateBookRequest {
     string title = 2;
     string author = 3;
     string category_id = 4;
-    string description = 5;
-    int32 stock = 6;
+    string author_id = 5;
+    string description = 6;
+    int32 stock = 7;
 }
 
 message DeleteBookRequest {

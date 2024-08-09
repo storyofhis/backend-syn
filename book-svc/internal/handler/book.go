@@ -6,6 +6,7 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/storyofhis/book-svc/internal/handler/author"
 	"github.com/storyofhis/book-svc/internal/handler/category"
 	"github.com/storyofhis/book-svc/internal/repository/model"
 	"github.com/storyofhis/book-svc/internal/service"
@@ -42,12 +43,33 @@ func (s *Server) CreateBook(ctx context.Context, req *pb.CreateBookRequest) (*pb
 
 	fmt.Println("Category Name:", category.Name)
 
+	authorID := req.AuthorId
+	authorIdInt, err := strconv.Atoi(authorID)
+	if err != nil {
+		log.Println("[ERROR] : Invalid author ID")
+		return nil, err
+	}
+
+	author, err := author.GetAuthorById(authorIdInt)
+	if err != nil {
+		log.Println("[ERROR] : Cannot find the author", err)
+		return nil, err
+	}
+
+	if author == nil {
+		log.Println("[ERROR] : Author is nil")
+		return nil, fmt.Errorf("author not found")
+	}
+
+	fmt.Println("Author Name : ", author.Name)
+
 	// Create a new book record with the received details
 	newBook := model.Book{
 		Title:       req.Title,
 		Author:      req.Author,
 		Description: req.Description,
 		CategoryId:  categoryID, // Keep CategoryId as string
+		AuthorId:    authorID,
 		Stock:       req.Stock,
 	}
 
@@ -64,6 +86,7 @@ func (s *Server) CreateBook(ctx context.Context, req *pb.CreateBookRequest) (*pb
 			Author:      createdBook.Author,
 			Description: createdBook.Description,
 			CategoryId:  createdBook.CategoryId, // No conversion needed
+			AuthorId:    createdBook.AuthorId,
 			Stock:       createdBook.Stock,
 		},
 	}, nil
@@ -82,6 +105,7 @@ func (s *Server) GetBooks(ctx context.Context, req *pb.GetBooksRequest) (*pb.Get
 			Author:      book.Author,
 			Description: book.Description,
 			CategoryId:  book.CategoryId,
+			AuthorId:    book.AuthorId,
 			Stock:       book.Stock,
 		})
 	}
@@ -100,6 +124,9 @@ func (s *Server) GetBookById(ctx context.Context, req *pb.GetBookByIDRequest) (*
 			Id:          string(book.ID),
 			Title:       book.Title,
 			Author:      book.Author,
+			Stock:       book.Stock,
+			CategoryId:  book.CategoryId,
+			AuthorId:    book.AuthorId,
 			Description: book.Description,
 		},
 	}, nil
