@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func runGRPCServer(grpcPort string, userService service.UserService) {
+func runGRPCServer(grpcPort string, userService service.UserService, borrowService service.BorrowService) {
 	listener, err := net.Listen("tcp", grpcPort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -24,6 +24,9 @@ func runGRPCServer(grpcPort string, userService service.UserService) {
 	s := grpc.NewServer()
 	pb.RegisterUserServiceServer(s, &handler.Server{
 		Service: userService,
+	})
+	pb.RegisterBorrowServiceServer(s, &handler.BorrowServer{
+		Service: borrowService,
 	})
 
 	log.Printf("gRPC server started on %s", grpcPort)
@@ -37,7 +40,12 @@ func runGatewayServer(grpcPort, httpPort string) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := pb.RegisterUserServiceHandlerFromEndpoint(context.Background(), mux, grpcPort, opts)
 	if err != nil {
-		log.Fatalf("failed to start HTTP server: %v", err)
+		log.Fatalf("failed to start HTTP user server: %v", err)
+	}
+
+	err = pb.RegisterBorrowServiceHandlerFromEndpoint(context.Background(), mux, grpcPort, opts)
+	if err != nil {
+		log.Fatalf("failed to start HTTP borrow server: %v", err)
 	}
 
 	log.Printf("HTTP server started on %s", httpPort)
@@ -62,8 +70,10 @@ func main() {
 	userRepo := gorm.NewUserRepo(db)
 	userSvc := service.NewUserService(userRepo)
 
+	borrowRepo := gorm.NewBorrowRepo(db)
+	borrowSvc := service.NewBorrowService(borrowRepo)
 	grpcPort := ":50052"
-	go runGRPCServer(grpcPort, userSvc)
+	go runGRPCServer(grpcPort, userSvc, borrowSvc)
 
 	httpPort := ":8081"
 	runGatewayServer(grpcPort, httpPort)

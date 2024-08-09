@@ -4,6 +4,7 @@ go 1.21.2
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/golang/protobuf v1.5.4
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.21.0
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.25.0

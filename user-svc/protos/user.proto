@@ -5,6 +5,7 @@ package user;
 option go_package = "github.com/storyofhis/auth-svc/protos";
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 service UserService {
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
@@ -101,5 +102,85 @@ message DeleteUserByIdRequest {
 }
 
 message DeleteUserByIdResponse {
+    string message = 1;
+}
+
+service BorrowService {
+    rpc CreateBorrow(CreateBorrowRequest) returns (CreateBorrowResponse) {
+        option (google.api.http) = {
+            post: "/v1/borrows"
+            body: "*"
+        };
+    }
+    rpc GetBorrowById(GetBorrowByIdRequest) returns (GetBorrowByIdResponse) {
+        option (google.api.http) = {
+            get: "/v1/borrows/{id}"
+        };
+    }
+    rpc GetBorrows(GetBorrowsRequest) returns (GetBorrowsResponse) {
+        option (google.api.http) = {
+            get: "/v1/borrows"
+        };
+    }
+    rpc UpdateBorrowById(UpdateBorrowByIdRequest) returns (UpdateBorrowByIdResponse) {
+        option (google.api.http) = {
+            put: "/v1/borrows/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteBorrowById(DeleteBorrowByIdRequest) returns (DeleteBorrowByIdResponse) {
+        option (google.api.http) = {
+            delete: "/v1/borrows/{id}"
+        };
+    }
+}
+
+message Borrow {
+    string id = 1;
+    string user_id = 2;
+    string book_id = 3;
+    google.protobuf.Timestamp borrow_date = 4;
+    google.protobuf.Timestamp return_date = 5;
+    bool status = 6;
+}
+
+message CreateBorrowRequest {
+    string user_id = 1;
+    string book_id = 2;
+    google.protobuf.Timestamp borrow_date = 3;
+    google.protobuf.Timestamp return_date = 4;
+    bool status = 5;
+}
+
+message CreateBorrowResponse {
+    Borrow borrow = 1;
+}
+
+message GetBorrowsRequest {}
+message GetBorrowsResponse {
+    repeated Borrow borrows = 1;
+}
+
+message GetBorrowByIdRequest {
+    string id = 1;
+}
+
+message GetBorrowByIdResponse {
+    Borrow borrow = 1;
+}
+
+message UpdateBorrowByIdRequest {
+    string id = 1;
+}
+
+message UpdateBorrowByIdResponse {
+    Borrow body = 1;
+}
+
+message DeleteBorrowByIdRequest {
+    string id = 1;
+}
+
+message DeleteBorrowByIdResponse {
     string message = 1;
 }

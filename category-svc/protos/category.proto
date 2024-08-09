@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/storyofhis/category-svc/protos";
+
+import "google/api/annotations.proto";
+
+service CategoryService {
+    rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse) {
+        option (google.api.http) = {
+            post: "/v1/categories"
+            body: "*"
+        };
+    }
+    rpc GetCategories(GetCategoryRequest) returns (GetCategoryResponse) {
+        option (google.api.http) = {
+            get: "/v1/categories"
+        };
+    }
+    rpc GetCategoryById(GetCategoryByIdRequest) returns (GetCategoryByIdResponse) {
+        option (google.api.http) = {
+            get: "/v1/categories/{id}"
+        };
+    }
+    rpc UpdateCategoryById(UpdateCategoryByIdRequest) returns (UpdateCategoryByIdResponse) {
+        option (google.api.http) = {
+            put: "/v1/categories/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteCategory(DeleteCategoryRequest) returns (DeleteCategoryResponse) {
+        option (google.api.http) = {
+            delete: "/v1/categories/{id}"
+        };
+    }
+}
+
+message Category {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message CreateCategoryRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message CreateCategoryResponse {
+    Category category = 1;
+}
+
+message GetCategoryRequest {}
+
+message GetCategoryResponse {
+    repeated Category categories = 1;
+}
+
+message GetCategoryByIdRequest {
+    string id = 1;
+}
+
+message GetCategoryByIdResponse {
+    Category category = 1;
+}
+
+message UpdateCategoryByIdRequest {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message UpdateCategoryByIdResponse {
+    Category category = 1;
+}
+
+message DeleteCategoryRequest {
+    string id = 1;
+}
+
+message DeleteCategoryResponse {
+    string message = 1;
+}
