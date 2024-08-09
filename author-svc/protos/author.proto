@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package book;
+
+option go_package = "github.com/storyofhis/author-service/protos";
+
+import "google/api/annotations.proto";
+
+service AuthorService {
+    rpc CreateAuthor(CreateAuthorRequest) returns (CreateAuthorResponse) {
+        option (google.api.http) = {
+            post: "/v1/authors"
+            body: "*"
+        };
+    }
+    rpc GetAuthorById(GetAuthorByIdRequest) returns (GetAuthorByIdResponse) {
+        option (google.api.http) = {
+            get: "/v1/authors/{id}"
+        };
+    }
+    rpc GetAuthors(GetAuthorsRequest) returns (GetAuthorsResponse) {
+        option (google.api.http) = {
+            get: "/v1/authors"
+        };
+    }
+    rpc UpdateAuthor(UpdateAuthorRequest) returns (UpdateAuthorResponse) {
+        option (google.api.http) = {
+            put: "/v1/authors/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteAuthor(DeleteAuthorRequest) returns (DeleteAuthorResponse) {
+        option (google.api.http) = {
+            delete: "/v1/authors/{id}"
+        };
+    }
+}
+
+message Author {
+   string id = 1;
+   string name = 2;
+   string biography = 3;
+}
+
+message CreateAuthorRequest {
+    string name = 1;
+    string biography = 2;
+}
+
+message CreateAuthorResponse {
+    Author author = 1;
+}
+
+message GetAuthorByIdRequest {
+    string id = 1;
+}
+
+message GetAuthorByIdResponse {
+    Author author = 1;
+}
+
+message GetAuthorsRequest {}
+message GetAuthorsResponse {
+    repeated Author authors = 1;
+}
+
+message UpdateAuthorRequest {
+    string id = 1;
+}
+
+message UpdateAuthorResponse {
+    Author author = 1;
+}
+
+message DeleteAuthorRequest {
+    string id = 1;
+}
+
+message DeleteAuthorResponse {
+    string message = 1;
+}
